@@ -53,7 +53,8 @@ function UpdateDiapers(int i)
 			NPC_DiaperState[i] = 0
 		else
 			if (NPC_DiaperState[i] == 1 && !PAF_MainQuest.HasDiaper(PAF_TrackedActors[i], true))
-				PAF_MainQuest.DisplayMessage(GetNPCName(PAF_TrackedActors[i]) + " diaper begins to reek...")
+				; PAF_MainQuest.DisplayMessage(GetNPCName(PAF_TrackedActors[i]) + " diaper begins to reek...")
+				PAF_MainQuest.DisplayMessage(GetNPCName(PAF_TrackedActors[i]) + "的尿布开始发出臭味...")
 				PAF_TrackedActors[i].UnequipItem(PAF_MainQuest.PAF_DiaperArmor, false, true)
 				PAF_TrackedActors[i].RemoveItem(PAF_MainQuest.PAF_DiaperArmor, 1, absilent = true)
 				PAF_TrackedActors[i].EquipItem(PAF_MainQuest.PAF_DiaperDirtyArmor, false, true)
@@ -259,7 +260,8 @@ endfunction
 
 function ReleaseActors()
 
-	PAF_MainQuest.DisplayMessage("PAF: Resetting actors...")
+	; PAF_MainQuest.DisplayMessage("PAF: Resetting actors...")
+	PAF_MainQuest.DisplayMessage("PAF：重置角色...")
 	int i = 0;
 	while i < MAX_ACTOR_COUNT
 		if (PAF_TrackedActors[i] != none)
@@ -343,7 +345,8 @@ endfunction
 
 function AddActor(Actor a_actor)
 	if (WaitLockedActors() == -1)
-		PAF_MainQuest.DisplayMessage("PAF: Could not process actor")
+		; PAF_MainQuest.DisplayMessage("PAF: Could not process actor")
+		PAF_MainQuest.DisplayMessage("PAF: 无法处理角色")
 		return
 	endif
 	int i = IsTrackedActor(a_actor)
@@ -358,9 +361,11 @@ function AddActor(Actor a_actor)
 			NPC_last_pee[_actor_index] = Utility.GetCurrentGameTime()
 			NPC_last_poop[_actor_index] = Utility.GetCurrentGameTime()
 			_actor_index += 1
-			PAF_MainQuest.DisplayMessage("PAF: Adding actor")
+			; PAF_MainQuest.DisplayMessage("PAF: Adding actor")
+			PAF_MainQuest.DisplayMessage("PAF: 添加角色")
 		else
-			PAF_MainQuest.DisplayMessage("PAF: You cannot track more actors! Please release someone...")
+			; PAF_MainQuest.DisplayMessage("PAF: You cannot track more actors! Please release someone...")
+			PAF_MainQuest.DisplayMessage("PAF: 你无法追踪更多的角色！请释放一些人...")
 		endif
 	endif
 	_lock_actors = false
@@ -395,7 +400,8 @@ function RemoveActor(int i)
 		endif
 	endif
 	_actor_index -= 1
-	PAF_MainQuest.DisplayMessage("PAF: Actor removed")
+	; PAF_MainQuest.DisplayMessage("PAF: Actor removed")
+	PAF_MainQuest.DisplayMessage("PAF: 角色已移除")
 endfunction
 
 int function IsTrackedActor(Actor a_actor)
@@ -422,12 +428,14 @@ function Pee(Actor a_actor, bool peeOnly = false)
 	if (NPC_PeeState[i] > 0)
 
 		if (PAF_DDQuest.HasArmbinder(a_actor))
-			PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) + " arms are locked!")
+			; PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) + " arms are locked!")
+			PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) + "的手臂被锁住了！")
 			Leak(a_actor)
 			return
 		endif
 
-		PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) + " relieves " + GetNPCReflexivePronoun(a_actor) + "...")
+		; PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) + " relieves " + GetNPCReflexivePronoun(a_actor) + "...")
+		PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) + "在释放他/她自己...")
 		Form[] equipment = PAF_MainQuest.StripActor(a_actor)
 		Wait(3)
 
@@ -442,7 +450,8 @@ function Pee(Actor a_actor, bool peeOnly = false)
 		endif
 		PAF_MainQuest.UnstripActor(a_actor, equipment)
 		NPC_last_pee[i] = Utility.GetCurrentGameTime()
-		PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) + " relieved " + GetNPCReflexivePronoun(a_actor) + ".")
+		; PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) + " relieved " + GetNPCReflexivePronoun(a_actor) + ".")
+		PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) + "释放了他/她自己。")
 	endif
 endfunction
 
@@ -458,7 +467,8 @@ int function PeeFemale(Actor a_actor, bool peeOnly = false)
 	endif
 	StartPeeSound(a_actor)
 	if (PAF_MainQuest.HasDiaper(a_actor))
-		PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) + " pees in " + GetNPCPronoun(a_actor) + " diaper")
+		; PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) + " pees in " + GetNPCPronoun(a_actor) + " diaper")
+		PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) + "在尿布里尿尿")
 	endif
 	Wait(2)
 	PAF_MainQuest.PlacePeePuddle(a_actor, style, true)
@@ -479,7 +489,8 @@ int function PeeFemale(Actor a_actor, bool peeOnly = false)
 	Wait(1.5)
 	PAF_MainQuest.PlayPeeIdleStop(a_actor, style, true)
 	PAF_MainQuest.ClearFacialExpressions(a_actor)
-	PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) + " feels relieved")
+	; PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) + " feels relieved")
+	PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) + "感到如负释重")
 	return result
 endfunction
 
@@ -492,7 +503,8 @@ int function PeeMale(Actor a_actor, bool peeOnly = false)
 	PAF_MainQuest.EquipTinke(a_actor)
 	StartPeeSound(a_actor)
 	if (PAF_MainQuest.HasDiaper(a_actor))
-		PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) + " pees in " + GetNPCPronoun(a_actor) + " diaper")
+		; PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) + " pees in " + GetNPCPronoun(a_actor) + " diaper")
+		PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) + "在尿布里尿尿")
 	endif
 	Wait(2)
 	PAF_MainQuest.PlacePeePuddle(a_actor, style, false)
@@ -508,7 +520,8 @@ int function PeeMale(Actor a_actor, bool peeOnly = false)
 	Wait(1.5)
 	PAF_MainQuest.PlayPeeIdleStop(a_actor, style, false)
 	PAF_MainQuest.ClearFacialExpressions(a_actor)
-	PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) + " feels relieved")
+	; PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) + " feels relieved")
+	PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) + "感到如负释重")
 	Debug.SendAnimationEvent(a_actor, "SOSFlaccid")
 	a_actor.RemoveFromFaction(PAF_MainQuest.SexLab.AnimatingFaction)
 	return result
@@ -521,6 +534,7 @@ function PeeVirtual(Actor a_actor)
 	endif
 	NPC_last_pee[i] = Utility.GetCurrentGameTime();
 	;PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) + " peed somewhere")
+	;PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) + "在某处尿尿了")
 endfunction
 
 function PoopVirtual(Actor a_actor)
@@ -530,6 +544,7 @@ function PoopVirtual(Actor a_actor)
 	endif
 	NPC_last_poop[i] = Utility.GetCurrentGameTime();
 	;PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) + " pooped somewhere")
+	;PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) + "在某处排便了")
 endfunction
 
 int function PeeAsync(Actor a_actor, bool peeOnly = false)
@@ -538,7 +553,8 @@ int function PeeAsync(Actor a_actor, bool peeOnly = false)
 		return -1
 	endif
 	if (WaitLockedActors() == -1)
-		PAF_MainQuest.DisplayMessage("Actors are busy")
+		; PAF_MainQuest.DisplayMessage("Actors are busy")
+		PAF_MainQuest.DisplayMessage("角色繁忙")
 	endif
 	Pee(a_actor, peeOnly)
 	_lock_actors = false
@@ -551,7 +567,8 @@ int function PoopAsync(Actor a_actor)
 		return - 1
 	endif
 	if (WaitLockedActors() == -1)
-		PAF_MainQuest.DisplayMessage("Actors are busy")
+		; PAF_MainQuest.DisplayMessage("Actors are busy")
+		PAF_MainQuest.DisplayMessage("角色繁忙")
 	endif
 	PoopSensual(a_actor)
 	_lock_actors = false
@@ -564,9 +581,11 @@ function Leak(Actor a_actor)
 		return
 	endif
 	if (PAF_MainQuest.HasDiaper(a_actor))
-		PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) +" leaks in " + GetNPCPronoun(a_actor) + " diaper")
+		; PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) +" leaks in " + GetNPCPronoun(a_actor) + " diaper")
+		PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) +"在尿布里漏尿了")
 	else
-		PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) +" is leaking!")
+		; PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) +" is leaking!")
+		PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) +"正在漏尿！")
 	endif
 	PAF_MainQuest.EquipTinke(a_actor)
 	StartPeeSound(a_actor)
@@ -585,7 +604,8 @@ int function PoopPanty(Actor a_actor)
 	endif
 	int result = poop(a_actor, dirty = true)
 	if (result == 0)
-		PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) + " needed to evacuate " +  GetNPCReflexivePronoun(a_actor))
+		; PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) + " needed to evacuate " +  GetNPCReflexivePronoun(a_actor))
+		PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) + "需要排泄")
 	endif
 	NPC_last_poop[i] = Utility.GetCurrentGameTime()
 	return result
@@ -597,9 +617,11 @@ int function LeakAndPoop(Actor a_actor)
 		return -1
 	endif
 	if (PAF_MainQuest.HasDiaper(a_actor))
-		PAF_MainQuest.DisplayMessage(GetNPCName(a_actor)+ " pees in " + GetNPCPronoun(a_actor) + " diaper")
+		; PAF_MainQuest.DisplayMessage(GetNPCName(a_actor)+ " pees in " + GetNPCPronoun(a_actor) + " diaper")
+		PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) + "在尿布里尿尿")
 	else
-		PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) +" is leaking")
+		; PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) +" is leaking")
+		PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) +"正在漏尿！")
 	endif
 	PAF_MainQuest.ApplyFacialExpressions(a_actor, 12)
 	PAF_MainQuest.EquipTinke(a_actor, leak = true)
@@ -608,7 +630,8 @@ int function LeakAndPoop(Actor a_actor)
 	PAF_MainQuest.PlacePuddle(a_actor, 0, 0, 1)
 	Wait(2)
 	if (poop(a_actor, dirty = true) == 0)
-		PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) + " had to release the content of " + GetNPCPronoun(a_actor) +" bowels")
+		; PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) + " had to release the content of " + GetNPCPronoun(a_actor) +" bowels")
+		PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) + "不得不排便")
 		NPC_last_poop[i] = Utility.GetCurrentGameTime()
 	endif
 	PAF_MainQuest.PlacePuddle(a_actor, 0, 0, 1)
@@ -642,11 +665,13 @@ function UseToilet(Actor a_actor, bool createPoop = false)
 		Wait(10)
 	endif
 	if (PAF_DDQuest.IsAnalPlugged(a_actor))
-			PAF_MainQuest.DisplayMessage("An anal plug prevents " + GetNPCName(a_actor) + " from pooping...")
+			; PAF_MainQuest.DisplayMessage("An anal plug prevents " + GetNPCName(a_actor) + " from pooping...")
+			PAF_MainQuest.DisplayMessage("肛塞正阻止" + GetNPCName(a_actor) + "排便...")
 		poop = false
 	endif
 	if (PAF_DDQuest.HasDeviousBelt(a_actor))
-		PAF_MainQuest.DisplayMessage("A devious mechanism prevents " + GetNPCName(a_actor) + " from pooping...")
+		; PAF_MainQuest.DisplayMessage("A devious mechanism prevents " + GetNPCName(a_actor) + " from pooping...")
+		PAF_MainQuest.DisplayMessage("DD设备正阻止" + GetNPCName(a_actor) + "排便...")
 		poop = false
 	endif
 	int result = -1
@@ -663,7 +688,8 @@ function UseToilet(Actor a_actor, bool createPoop = false)
 	endif
 	if (pee || poop)
 		PAF_MainQuest.UnstripActor(a_actor, equipment)
-		PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) +" relieved " + GetNPCReflexivePronoun(a_actor))
+		; PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) +" relieved " + GetNPCReflexivePronoun(a_actor))
+		PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) +"已经如厕了")
 	endif
 endfunction
 
@@ -674,17 +700,21 @@ int function poop(Actor a_actor, bool createPoop = true, bool dirty = false)
 	endif
 	if (NPC_PoopState[i] > 0 && !PAF_MainQuest.PAF_MCMQuest.PAF_Disable_Fart)
 		if (PAF_DDQuest.IsAnalPlugged(a_actor))
-			PAF_MainQuest.DisplayMessage("An anal plug prevents " + GetNPCName(a_actor) + " from pooping...")
+			; PAF_MainQuest.DisplayMessage("An anal plug prevents " + GetNPCName(a_actor) + " from pooping...")
+			PAF_MainQuest.DisplayMessage("肛塞正阻止" + GetNPCName(a_actor) + "排便...")
 			return -1
 		endif
 		if (PAF_DDQuest.HasDeviousBelt(a_actor))
-			PAF_MainQuest.DisplayMessage("A devious mechanism prevents " + GetNPCName(a_actor) + " from pooping...")
+			; PAF_MainQuest.DisplayMessage("A devious mechanism prevents " + GetNPCName(a_actor) + " from pooping...")
+			PAF_MainQuest.DisplayMessage("DD设备正阻止" + GetNPCName(a_actor) + "排便...")
 			return -1
 		endif
 		if (PAF_MainQuest.HasDiaper(a_actor))
-			PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) + " poops in " + GetNPCPronoun(a_actor) + " diaper")
+			; PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) + " poops in " + GetNPCPronoun(a_actor) + " diaper")
+			PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) + "在尿布里排便")
 		else
 			;PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) + "s anal muscles relax...")
+			;PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) + "的肛门肌肉放松了...")
 		endif
 		int j = 0
 		int len = 4
@@ -733,7 +763,8 @@ int function PoopAnimatedFemale(Actor a_actor)
 		endif
 		if (NPC_PoopState[i] > 0)
 			if (PAF_MainQuest.PAF_DDQuest.HasArmbinder(a_actor))
-				PAF_MainQuest.DisplayMessage("An armbinder prevents " + GetNPCName(a_actor) + " from stripping...")
+				; PAF_MainQuest.DisplayMessage("An armbinder prevents " + GetNPCName(a_actor) + " from stripping...")
+				PAF_MainQuest.DisplayMessage("护臂正阻止" + GetNPCName(a_actor) + "脱衣...")
 				return PoopPanty(a_actor)
 			endif
 			int style = PAF_MainQuest.GetRandomAnimation(PAF_MainQuest.PAF_MCMQuest.PAF_AnimationPoop_F)
@@ -750,7 +781,8 @@ int function PoopAnimatedFemale(Actor a_actor)
 			PAF_MainQuest.UnstripActor(a_actor, equipment)
 			return result
 		else
-			PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) + " does not have to poop")
+			; PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) + " does not have to poop")
+			PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) + "不需要排便")
 		endif
 	endif
 	return -1
@@ -764,7 +796,8 @@ int function PoopAnimatedMale(Actor a_actor)
 		endif
 		if (NPC_PoopState[i] > 0)
 			if (PAF_MainQuest.PAF_DDQuest.HasArmbinder(a_actor))
-				PAF_MainQuest.DisplayMessage("An armbinder prevents " + GetNPCName(a_actor) + " from stripping...")
+				; PAF_MainQuest.DisplayMessage("An armbinder prevents " + GetNPCName(a_actor) + " from stripping...")
+				PAF_MainQuest.DisplayMessage("护臂正阻止" + GetNPCName(a_actor) + "脱衣...")
 				return PoopPanty(a_actor)
 			endif
 			int style = PAF_MainQuest.GetRandomAnimation(PAF_MainQuest.PAF_MCMQuest.PAF_AnimationPoop_M)
@@ -781,7 +814,8 @@ int function PoopAnimatedMale(Actor a_actor)
 			PAF_MainQuest.UnstripActor(a_actor, equipment)
 			return result
 		else
-			PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) + " does not have to poop")
+			; PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) + " does not have to poop")
+			PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) + "不需要排便")
 		endif
 	endif
 	return -1
@@ -795,19 +829,23 @@ function UseToiletPaper(Actor a_actor)
 		return
 	endif
 	if (PAF_MainQuest.HasDiaper(a_actor))
-		PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) + " is weaing a diaper. No way to clean " + GetNPCReflexivePronoun(a_actor))
+		; PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) + " is weaing a diaper. No way to clean " + GetNPCReflexivePronoun(a_actor))
+		PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) + "正在穿着尿布，没办法自己清理")
 		return
 	endif
 	if (PAF_DDQuest.HasArmbinder(a_actor))
-		PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) + " arms are locked and cannot use toilet paper")
+		; PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) + " arms are locked and cannot use toilet paper")
+		PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) + "手臂被锁住。不能使用卫生纸")
 		return
 	endif
 	if (PAF_MainQuest.HasToiletPaper(a_actor))
-		PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) + " cleaned " + GetNPCReflexivePronoun(a_actor) + " with some toilet paper")
+		; PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) + " cleaned " + GetNPCReflexivePronoun(a_actor) + " with some toilet paper")
+		PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) + "使用了一些卫生纸将自己清理干净")
 		PAF_MainQuest.Bathe(a_actor)
 		PAF_MainQuest.RemoveToiletPaper(a_actor)
 	else
-		PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) + " has no toilet paper")
+		; PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) + " has no toilet paper")
+		PAF_MainQuest.DisplayMessage(GetNPCName(a_actor) + "没有卫生纸")
 	endif
 endfunction
 
