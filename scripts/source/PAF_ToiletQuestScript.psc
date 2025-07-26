@@ -118,7 +118,8 @@ endfunction
 function DeleteToilets()
  	
 	_lock_toilets = false
-	Debug.Notification("PAF: Resetting toilets...")		
+	; Debug.Notification("PAF: Resetting toilets...")
+	Debug.Notification("PAF: 重置厕所...")
 	int i = 0;
 	while i < MAX_TOILET_COUNT
 		if (PAF_Toilets[i] != none)
@@ -138,7 +139,8 @@ endfunction
 function PlaceToilet(ObjectReference target, int type = 0)
 
 	if (WaitLockedToilets() == -1)
-		Debug.Notification("PAF: could not process toilet...")	
+		; Debug.Notification("PAF: could not process toilet...")
+		Debug.Notification("PAF: 无法处理厕所...")
 		return
 	endif
 
@@ -211,10 +213,12 @@ int function AddToilet(ObjectReference a_toilet, ObjectReference a_door)
 			PAF_Toilets[_toilet_index] = a_toilet
 			PAF_ToiletDoors[_toilet_index] = a_door			
 			_toilet_index += 1			
-			Debug.Notification("PAF: Adding toilet.")
+			; Debug.Notification("PAF: Adding toilet.")
+			Debug.Notification("PAF: 添加厕所.")
 			return 0
 		else
-			Debug.Notification("PAF: You cannot add more toilets! Please deconstruct some...")
+			; Debug.Notification("PAF: You cannot add more toilets! Please deconstruct some...")
+			Debug.Notification("PAF: 你不能再增加厕所了！请移除一些...")
 			return -1
 		endif	
 	endif
@@ -248,7 +252,8 @@ function RemoveToilet(int i)
 		endif
 	endif
 	_toilet_index -= 1	
-	Debug.Notification("PAF: Toilet removed.")
+	; Debug.Notification("PAF: Toilet removed.")
+	Debug.Notification("PAF: 厕所已移除")
 endfunction
 
 int function IsTrackedToilet(ObjectReference a_toilet)
