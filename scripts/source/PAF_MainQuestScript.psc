@@ -225,7 +225,8 @@ function CheckGuards()
 					Faction crimeFaction = guard.GetCrimeFaction()
 					if (crimeFaction != none)
 						crimeFaction.SetCrimeGold(crimeFaction.GetCrimeGold() + PAF_MCMQuest.PAF_CrimeValue)
-						DisplayMessage("Someone saw you relieving yourself in public!")
+						; DisplayMessage("Someone saw you relieving yourself in public!")
+						DisplayMessage("有人看见你在公共场合解手了！")
 						if (PAF_MCMQuest.PAF_DiaperPenalty)
 							diaper_received_bounty = true
 							diaper_bounty_active = true
@@ -256,7 +257,8 @@ function CheckArrest()
 			if (GetPlayerDialogueTarget().IsGuard())
 				if (!isAnimating)
 					PlayerREF.EquipItem(PAF_DiaperArmor, true, true)
-					DisplayMessage("The guard forces you to wear a diaper")
+					; DisplayMessage("The guard forces you to wear a diaper")
+					DisplayMessage("卫兵强迫你穿尿布")
 					diaper_bounty_timer = true
 					diaper_bounty_active = false
 					diaper_bounty_start = GetCurrentGameTime()
@@ -269,7 +271,8 @@ function CheckArrest()
 	endif
 	if (diaper_dialog_delayed && !isAnimating)
 		PlayerREF.EquipItem(PAF_DiaperArmor, true, true)
-		DisplayMessage("The guard forced you to wear a diaper")
+		; DisplayMessage("The guard forced you to wear a diaper")
+		DisplayMessage("卫兵强迫你穿尿布")
 		diaper_bounty_timer = true
 		diaper_dialog_delayed = false
 		diaper_bounty_start = GetCurrentGameTime()
@@ -286,7 +289,8 @@ function CheckDiaperPenalty()
 		endif
 		if (!diaper_bounty_timer)
 			UnequipDiaper(PlayerREF)
-			DisplayMessage("You do not need to wear a diaper anymore")
+			; DisplayMessage("You do not need to wear a diaper anymore")
+			DisplayMessage("你不用再穿尿布了")
 		endif
 	endif
 endFunction
@@ -318,7 +322,8 @@ function UpdateDiaper()
 		DiaperState = 0
 	else
 		if (DiaperState == 1 && !HasDiaper(PlayerREF, true) && !isAnimating)
-			DisplayMessage("Your diaper begins to reek...")
+			; DisplayMessage("Your diaper begins to reek...")
+			DisplayMessage("你的尿布开始发臭了...")
 			PlayerREF.UnequipItem(PAF_DiaperArmor, false, true)
 			PlayerREF.RemoveItem(PAF_DiaperArmor, 1, absilent = true)
 			if (diaper_bounty_timer)
@@ -350,11 +355,14 @@ function AutoLeak()
 		endif
 		if (last_animation_check == 1)			
 			if (PeeState > 3 && PoopState > 3)
-				DisplayMessage("You have to relieve yourself urgently!")
+				; DisplayMessage("You have to relieve yourself urgently!")
+				DisplayMessage("你必须尽快去解手！")
 			elseif (PeeState > 3)
-				DisplayMessage("You have to pee urgently!")
+				; DisplayMessage("You have to pee urgently!")
+				DisplayMessage("你必须要立刻尿尿！")
 			elseif (PoopState > 3)
-				DisplayMessage("You have to poop urgently!")
+				; DisplayMessage("You have to poop urgently!")
+				DisplayMessage("你必须要立刻排便！")
 			endif
 			if (!PAF_DDQuest.HasArmbinder(PlayerREF) && PAF_MCMQuest.PAF_PressureAnimation && !isAnimating)
 				ApplyFacialExpressions(PlayerREF, 9)
@@ -447,15 +455,18 @@ event OnKeyUp(Int KeyCode, Float HoldTime)
 				if (ref != none)
 					PAF_NPCQuest.AddActor(ref)
 				else
-					DisplayMessage("There was no valid actor in your sight")
+					; DisplayMessage("There was no valid actor in your sight")
+					DisplayMessage("在你的视野里没有合适的角色")
 				endif
 			elseif (result_more == 4)
 				Actor ref = Game.GetCurrentCrosshairRef() as Actor
 				if (ref != none)
 					VictimActor = ref
-					DisplayMessage("NPC toilet set")
+					; DisplayMessage("NPC toilet set")
+					DisplayMessage("设置NPC厕所")
 				else
-					DisplayMessage("There was no valid actor in your sight")
+					; DisplayMessage("There was no valid actor in your sight")
+					DisplayMessage("在你的视野里没有合适的角色")
 				endif
 			elseif (result_more == 5)
 				int result_kink = PAF_MenuKinkMessage.Show()
@@ -483,7 +494,8 @@ int function Pee(bool peeOnly = false)
 	endif
 	if (PeeState > 0 && ReadyToAnimate(PlayerREF))
 		if (PAF_DDQuest.HasArmbinder(PlayerREF))
-			DisplayMessage("Your arms are locked. You have no means to undress yourself")
+			; DisplayMessage("Your arms are locked. You have no means to undress yourself")
+			DisplayMessage("你的手臂被锁住了。你没法自己脱衣服")
 			return -1
 		endif
 		if (ReadyToAnimate(PlayerREF) && !isAnimating)
@@ -507,11 +519,13 @@ int function Pee(bool peeOnly = false)
 			isRelieving = false
 			return 0
 		else
-			DisplayMessage("You are not ready to do that now")
+			; DisplayMessage("You are not ready to do that now")
+			DisplayMessage("你现在还没准备好那么做")
 			return -1
 		endif
 	else
-		DisplayMessage("You do not have to pee")
+		; DisplayMessage("You do not have to pee")
+		DisplayMessage("你不需要尿尿")
 		return -1
 	endif
 	return -1
@@ -529,7 +543,8 @@ int function PeeFemale(bool peeOnly = false)
 	endif
 	StartPeeSound(PlayerREF)
 	if (HasDiaper(PlayerREF))
-		DisplayMessage("You pee in your diaper")
+		; DisplayMessage("You pee in your diaper")
+		DisplayMessage("你在尿布里尿尿")
 	else
 		isRelieving = true
 	endif
@@ -552,7 +567,8 @@ int function PeeFemale(bool peeOnly = false)
 	Wait(1.5)
 	PlayPeeIdleStop(PlayerREF, style, true)
 	ClearFacialExpressions(PlayerREF)
-	DisplayMessage("You feel relieved")
+	; DisplayMessage("You feel relieved")
+	DisplayMessage("你感到如释重负")
 	return result
 endfunction
 
@@ -565,7 +581,8 @@ int function PeeMale(bool peeOnly = false)
 	EquipTinke(PlayerREF)
 	StartPeeSound(PlayerREF)
 	if (HasDiaper(PlayerREF))
-		DisplayMessage("You pee in your diaper")
+		; DisplayMessage("You pee in your diaper")
+		DisplayMessage("你在尿布里尿尿")
 	else
 		isRelieving = true
 	endif
@@ -583,7 +600,8 @@ int function PeeMale(bool peeOnly = false)
 	Wait(1.5)
 	PlayPeeIdleStop(PlayerREF, style, false)
 	ClearFacialExpressions(PlayerREF)
-	DisplayMessage("You feel relieved")
+	; DisplayMessage("You feel relieved")
+	DisplayMessage("你感到如释重负")
 	Debug.SendAnimationEvent(Playerref, "SOSFlaccid")
 	PlayerREF.RemoveFromFaction(SexLab.AnimatingFaction)
 	return result
@@ -606,7 +624,8 @@ int function PoopAnimatedFemale()
 	int style = GetRandomAnimation(PAF_MCMQuest.PAF_AnimationPoop_F)
 	if (PoopState > 0 && !PAF_MCMQuest.PAF_Disable_Fart)
 		if (PAF_DDQuest.HasArmbinder(PlayerREF))
-			DisplayMessage("Your armbinder prevents you from stripping your clothing")
+			; DisplayMessage("Your armbinder prevents you from stripping your clothing")
+			DisplayMessage("你的臂套会妨碍你脱衣服")
 			return PoopPanty()
 		endif
 		if (ReadyToAnimate(PlayerREF) && !isAnimating)
@@ -632,7 +651,8 @@ int function PoopAnimatedFemale()
 			return -1
 		endif
 	else
-		DisplayMessage("You do not have to poop")
+		; DisplayMessage("You do not have to poop")
+		DisplayMessage("你不需要排便")
 	endif
 	return -1
 endfunction
@@ -641,7 +661,8 @@ int function PoopAnimatedMale()
 	int style = GetRandomAnimation(PAF_MCMQuest.PAF_AnimationPoop_M)
 	if (PoopState > 0 && !PAF_MCMQuest.PAF_Disable_Fart)
 		if (PAF_DDQuest.HasArmbinder(PlayerREF))
-			DisplayMessage("Your armbinder prevents you from stripping your clothing")
+			; DisplayMessage("Your armbinder prevents you from stripping your clothing")
+			DisplayMessage("你的臂套会妨碍你脱衣服")
 			return PoopPanty()
 		endif
 		if (ReadyToAnimate(PlayerREF) && !isAnimating)
@@ -666,7 +687,8 @@ int function PoopAnimatedMale()
 			return -1
 		endif
 	else
-		DisplayMessage("You do not have to poop")
+		; DisplayMessage("You do not have to poop")
+		DisplayMessage("你不需要排便")
 	endif
 	return -1
 endfunction
@@ -674,15 +696,18 @@ endfunction
 int function Poop(bool dirty = false, bool bottle = false)
 	if (PoopState > 0 && !PAF_MCMQuest.PAF_Disable_Fart)
 		if (PAF_DDQuest.IsAnalPlugged(PlayerREF))
-			DisplayMessage("An anal plug prevents you from pooping")
+			; DisplayMessage("An anal plug prevents you from pooping")
+			DisplayMessage("肛塞正阻止你排便")
 			return -1
 		endif
 		if (PAF_DDQuest.HasDeviousBelt(PlayerREF))
-			DisplayMessage("An devious mechanism prevents you from pooping")
+			; DisplayMessage("An devious mechanism prevents you from pooping")
+			DisplayMessage("DD设备正阻止你排便")
 			return -1
 		endif
 		if (HasDiaper(PlayerREF))
-			DisplayMessage("You poop in your diaper")
+			; DisplayMessage("You poop in your diaper")
+			DisplayMessage("你在尿布里拉屎了")
 		endif
 		int i = 0
 		int len = 4
@@ -731,9 +756,11 @@ endfunction
 
 int function Leak()
 	if (HasDiaper(PlayerREF))
-		DisplayMessage("You pee in your diaper")
+		; DisplayMessage("You pee in your diaper")
+		DisplayMessage("你在尿布里尿尿")
 	else
-		DisplayMessage("You are wetting yourself")
+		; DisplayMessage("You are wetting yourself")
+		DisplayMessage("你尿裤子了")
 		isRelieving = true
 	endif
 	bool animate = PAF_MCMQuest.PAF_LeakAnimation
@@ -777,7 +804,8 @@ int function PoopPanty()
 	endif
 	if (poop(dirty = true) == 0)
 		CheckGuards()
-		DisplayMessage("You had to release your bowels")
+		; DisplayMessage("You had to release your bowels")
+		DisplayMessage("你必须先排便")
 		ApplyDirtOverlay(PlayerREF, DirtState)
 		if (animate)
 			Game.EnablePlayerControls()
@@ -797,9 +825,11 @@ endfunction
 
 int function LeakAndPoop()
 	if (HasDiaper(PlayerREF))
-		DisplayMessage("You pee in your diaper")
+		; DisplayMessage("You pee in your diaper")
+		DisplayMessage("你在尿布里尿尿")
 	else
-		DisplayMessage("You are wetting yourself")
+		; DisplayMessage("You are wetting yourself")
+		DisplayMessage("你尿裤子了")
 		isRelieving = true
 	endif
 	bool animate = PAF_MCMQuest.PAF_LeakAnimation
@@ -816,7 +846,8 @@ int function LeakAndPoop()
 	PlacePuddle(PlayerREF, 0, 0, 1)
 	Wait(2)
 	if (poop(dirty = true) == 0)
-		DisplayMessage("You had to release your bowels")
+		; DisplayMessage("You had to release your bowels")
+		DisplayMessage("你必须先排便")
 	endif
 	CheckGuards()
 	PlacePuddle(PlayerREF, 0, 0, 1)
@@ -863,7 +894,8 @@ function UseToilet()
 	bool poop = PoopState > 0 && !PAF_MCMQuest.PAF_Disable_Fart
 	Form[] equipment
 	if (HasDiaper(PlayerREF))
-		DisplayMessage("As long as you are weaing a diaper, there is not need for a toilet")
+		; DisplayMessage("As long as you are weaing a diaper, there is not need for a toilet")
+		DisplayMessage("只要你还在用尿布，就不能使用马桶")
 		return
 	endif
 	isAnimating = true
@@ -878,11 +910,13 @@ function UseToilet()
 		Wait(10)
 	endif
 	if (PAF_DDQuest.IsAnalPlugged(PlayerREF))
-		DisplayMessage("An anal plug prevents you from pooping")
+		; DisplayMessage("An anal plug prevents you from pooping")
+		DisplayMessage("肛塞正阻止你排便")
 		poop = false
 	endif
 	if (PAF_DDQuest.HasDeviousBelt(PlayerREF))
-		DisplayMessage("A devious mechanism prevents you from pooping")
+		; DisplayMessage("A devious mechanism prevents you from pooping")
+		DisplayMessage("DD设备正阻止你排便")
 		poop = false
 	endif
 	int result = -1
@@ -899,7 +933,8 @@ function UseToilet()
 	endif
 	if (pee || poop)
 		UnstripActor(PlayerREF, equipment)
-		DisplayMessage("You have relieved yourself")
+		; DisplayMessage("You have relieved yourself")
+		DisplayMessage("你已经如厕了")
 	endif
 	Game.EnablePlayerControls()
 	isAnimating = false
@@ -909,11 +944,13 @@ endfunction
 
 function UseToiletPaper(bool isPeeing = false, bool animate = false)
 	if (HasDiaper(playerREF))
-		DisplayMessage("You are weaing a diaper. No way to clean yourself")
+		; DisplayMessage("You are weaing a diaper. No way to clean yourself")
+		DisplayMessage("你穿着尿布，没办法自己清理")
 		return
 	endif
 	if (PAF_DDQuest.HasArmbinder(PlayerREF))
-		DisplayMessage("Your arms are locked. You are not able to clean yourself")
+		; DisplayMessage("Your arms are locked. You are not able to clean yourself")
+		DisplayMessage("你的手臂被锁住了。你无法自己清理干净")
 		return
 	endif
 	if (HasToiletPaper(PlayerREF))
@@ -927,9 +964,11 @@ function UseToiletPaper(bool isPeeing = false, bool animate = false)
 			isAnimating = false
 		endif
 		Bathe(PlayerREF)
-		DisplayMessage("You cleaned yourself with some toilet paper")
+		; DisplayMessage("You cleaned yourself with some toilet paper")
+		DisplayMessage("你用卫生纸将自己清理干净")
 	else
-		DisplayMessage("You have no toilet paper to wipe yourself clean")
+		; DisplayMessage("You have no toilet paper to wipe yourself clean")
+		DisplayMessage("你没有卫生纸来擦干净自己")
 	endif
 endfunction
 
@@ -1105,11 +1144,13 @@ function PeeInBottle(Actor a_actor)
 	Form bottle = GetEmptyBottle(a_actor)
 	if (bottle != none)
 		if (PeeState == 0)
-			DisplayMessage("You do not have to pee")
+			; DisplayMessage("You do not have to pee")
+			DisplayMessage("你不需要去尿尿")
 			return
 		endif
 		if (HasDiaper(a_actor))
-			DisplayMessage("As long as you are weaing a diaper you cannot pee into bottles")
+			; DisplayMessage("As long as you are weaing a diaper you cannot pee into bottles")
+			DisplayMessage("只要你还穿着尿布，你就不能尿到瓶子里")
 			return
 		endif
 		Game.DisablePlayerControls(true, true, false, false, true, true, false)
@@ -1153,7 +1194,8 @@ function PeeInBottle(Actor a_actor)
 		isAnimating = false
 		Game.EnablePlayerControls()
 	else
-		DisplayMessage("You do not have any empty bottle")
+		; DisplayMessage("You do not have any empty bottle")
+		DisplayMessage("你没有任何空瓶子")
 	endif
 endFunction
 
@@ -1161,19 +1203,23 @@ function PoopInBottle(Actor a_actor)
 	Form bottle = GetEmptyBottle(a_actor)
 	if (bottle != none)
 		if (PoopState == 0)
-			DisplayMessage("You do not have to poop")
+			; DisplayMessage("You do not have to poop")
+			DisplayMessage("你不需要排便")
 			return
 		endif
 		if (HasDiaper(a_actor))
-			DisplayMessage("As long as you are weaing a diaper you cannot poop into bottles")
+			; DisplayMessage("As long as you are weaing a diaper you cannot poop into bottles")
+			DisplayMessage("只要你还穿着尿布，你就不能把便便拉到瓶子里")
 			return
 		endif
 		if (PAF_DDQuest.IsAnalPlugged(a_actor))
-			DisplayMessage("An anal plug prevents you from pooping")
+			; DisplayMessage("An anal plug prevents you from pooping")
+			DisplayMessage("肛塞正阻止你排便")
 			return
 		endif
 		if (PAF_DDQuest.HasDeviousBelt(a_actor))
-			DisplayMessage("A devious mechanism prevents you from pooping")
+			; DisplayMessage("A devious mechanism prevents you from pooping")
+			DisplayMessage("DD设备正阻止你排便")
 			return
 		endif
 		isAnimating = true
@@ -1197,7 +1243,8 @@ function PoopInBottle(Actor a_actor)
 		isAnimating = false
 		UseToiletPaper(a_actor)
 	else
-		DisplayMessage("You do not have any empty bottle")
+		; DisplayMessage("You do not have any empty bottle")
+		DisplayMessage("你没有任何空瓶子")
 	endif
 endFunction
 
@@ -1458,12 +1505,14 @@ function InitPAF()
 	SexLab = SexLabUtil.GetApi()
 	RegisterForSingleUpdate(10)
 	RegisterSexlabHooks()
-	DisplayMessage("PAF: Ready")
+	; DisplayMessage("PAF: Ready")
+	DisplayMessage("PAF: 已准备")
 endfunction
 
 function DeinitPAF()
 	UnregisterForUpdate()
-	DisplayMessage("PAF: Uninstalling")
+	; DisplayMessage("PAF: Uninstalling")
+	DisplayMessage("PAF: 卸载中")
 	DirtState = 0
 	PeeState = 0
 	PoopState = 0
@@ -1581,27 +1630,37 @@ function DisplayNeeds(Actor a_actor)
 
 	if (!PAF_MCMQuest.PAF_DiablePlayerNeeds)
 		if(PeeState == 0)
-			DisplayMessage("You do not have to pee")
+			; DisplayMessage("You do not have to pee")
+			DisplayMessage("你不需要去尿尿")
 		elseif(PeeState == 1)
-			DisplayMessage("There is very little pressure in your bladder")
+			; DisplayMessage("There is very little pressure in your bladder")
+			DisplayMessage("你的膀胱压力很小")
 		elseif(PeeState == 2)
-			DisplayMessage("There is pressure in your bladder")
+			; DisplayMessage("There is pressure in your bladder")
+			DisplayMessage("你的膀胱有压力")
 		elseif(PeeState == 3)
-			DisplayMessage("There is huge pressure in your bladder")
+			; DisplayMessage("There is huge pressure in your bladder")
+			DisplayMessage("你的膀胱压力很大")
 		elseif(PeeState >= 4)
-			DisplayMessage("You are about to wet yourself")
+			; DisplayMessage("You are about to wet yourself")
+			DisplayMessage("你快要尿裤子了")
 		endif
 		if (!PAF_MCMQuest.PAF_Disable_Fart)
 			if(PoopState == 0)
-				DisplayMessage("You do not have to poop")
+				; DisplayMessage("You do not have to poop")
+				DisplayMessage("你不需要排便")
 			elseif(PoopState == 1)
-				DisplayMessage("There is very little pressure in your bowels")
+				; DisplayMessage("There is very little pressure in your bowels")
+				DisplayMessage("你的肠道压力很小")
 			elseif(PoopState == 2)
-				DisplayMessage("There is pressure in your bowels")
+				; DisplayMessage("There is pressure in your bowels")
+				DisplayMessage("你的肠道有压力")
 			elseif(PoopState == 3)
-				DisplayMessage("There is huge pressure in your bowels")
+				; DisplayMessage("There is huge pressure in your bowels")
+				DisplayMessage("你的肠道压力很大")
 			elseif(PoopState >= 4)
-				DisplayMessage("You are about to poo in your panties")
+				; DisplayMessage("You are about to poo in your panties")
+				DisplayMessage("你快要拉到内裤里了")
 			endif
 		endif
 	endif
@@ -1612,27 +1671,37 @@ function DisplayNeeds(Actor a_actor)
 			string Name = PAF_NPCQuest.GetNPCName(a_actor)
 			string pronoun = PAF_NPCQuest.GetNPCReflexivePronoun(a_actor)
 			if(PAF_NPCQuest.NPC_PeeState[i] == 0)
-				DisplayMessage(Name + " does not have to pee")
+				; DisplayMessage(Name + " does not have to pee")
+				DisplayMessage(Name + "不需要尿尿")
 			elseif(PAF_NPCQuest.NPC_PeeState[i] == 1)
-				DisplayMessage("There is very little pressure in " + Name +"s bladder")
+				; DisplayMessage("There is very little pressure in " + Name +"s bladder")
+				DisplayMessage(Name + "感到膀胱内有一些压力")
 			elseif(PAF_NPCQuest.NPC_PeeState[i] == 2)
-				DisplayMessage("There is pressure in " + Name +"s bladder")
+				; DisplayMessage("There is pressure in " + Name +"s bladder")
+				DisplayMessage(Name + "感到膀胱内有压力")
 			elseif(PAF_NPCQuest.NPC_PeeState[i] == 3)
-				DisplayMessage("There is huge pressure in " + Name +"s bladder")
+				; DisplayMessage("There is huge pressure in " + Name +"s bladder")
+				DisplayMessage(Name + "感到膀胱内有很大的压力")
 			elseif(PAF_NPCQuest.NPC_PeeState[i] >= 4)
-				DisplayMessage(Name + " is about to wet " + pronoun)
+				; DisplayMessage(Name + " is about to wet " + pronoun)
+				DisplayMessage(Name + "快要尿裤子了")
 			endif
 			if (!PAF_MCMQuest.PAF_Disable_Fart)
 				if(PAF_NPCQuest.NPC_PoopState[i] == 0)
-					DisplayMessage(Name + " does not have to poop")
+					; DisplayMessage(Name + " does not have to poop")
+					DisplayMessage(Name + "不需要排便")
 				elseif(PAF_NPCQuest.NPC_PoopState[i] == 1)
-					DisplayMessage("There is very litte pressure in " + Name +"s bowels")
+					; DisplayMessage("There is very litte pressure in " + Name +"s bowels")
+					DisplayMessage(Name + "感到肠道内有一些压力")
 				elseif(PAF_NPCQuest.NPC_PoopState[i] == 2)
-					DisplayMessage("There is pressure in " + Name +"s bowels")
+					; DisplayMessage("There is pressure in " + Name +"s bowels")
+					DisplayMessage(Name + "感到肠道内有压力")
 				elseif(PAF_NPCQuest.NPC_PoopState[i] == 3)
-					DisplayMessage("There is huge pressure in " + Name +"s bowels")
+					; DisplayMessage("There is huge pressure in " + Name +"s bowels")
+					DisplayMessage(Name + "感到肠道内有很大的压力")
 				elseif(PAF_NPCQuest.NPC_PoopState[i] >= 4)
-					DisplayMessage(Name + " is about to poop " + pronoun)
+					; DisplayMessage(Name + " is about to poop " + pronoun)
+					DisplayMessage(Name + "快要拉裤子里了")
 				endif
 			endif
 		endif
@@ -1905,9 +1974,11 @@ int function StartSexlabAnimation(Actor dom, Actor sub, bool pee, bool fart, int
 			if (pee && fart)
 				if (PAF_DDQuest.IsAnalPlugged(dom) || PAF_DDQuest.hasDeviousBelt(dom))
 					if (dom == PlayerREF)
-						DisplayMessage("You are wearing an anal plug and therefore cannot relieve your bowels")
+						; DisplayMessage("You are wearing an anal plug and therefore cannot relieve your bowels")
+						DisplayMessage("你戴了肛塞，因此无法排便")
 					else
-						DisplayMessage(PAF_NPCQuest.GetNPCName(dom) + " is wearing an anal plug and therefore cannot relieve " + PAF_NPCQuest.GetNPCPronoun(dom) + " bowels")
+						; DisplayMessage(PAF_NPCQuest.GetNPCName(dom) + " is wearing an anal plug and therefore cannot relieve " + PAF_NPCQuest.GetNPCPronoun(dom) + " bowels")
+						DisplayMessage(PAF_NPCQuest.GetNPCName(dom) + "戴了肛塞，因此无法排便")
 					endif
 					return -1
 				endif
@@ -1919,9 +1990,11 @@ int function StartSexlabAnimation(Actor dom, Actor sub, bool pee, bool fart, int
 			elseif (fart)
 				if (PAF_DDQuest.IsAnalPlugged(dom) || PAF_DDQuest.hasDeviousBelt(dom))
 					if (dom == PlayerREF)
-						DisplayMessage("You are wearing an anal plug and therefore cannot relieve your bowels")
+						; DisplayMessage("You are wearing an anal plug and therefore cannot relieve your bowels")
+						DisplayMessage("你戴了肛塞，因此无法排便")
 					else
-						DisplayMessage(PAF_NPCQuest.GetNPCName(dom) + " is wearing an anal plug and therefore cannot relieve " + PAF_NPCQuest.GetNPCPronoun(dom) + " bowels")
+						; DisplayMessage(PAF_NPCQuest.GetNPCName(dom) + " is wearing an anal plug and therefore cannot relieve " + PAF_NPCQuest.GetNPCPronoun(dom) + " bowels")
+						DisplayMessage(PAF_NPCQuest.GetNPCName(dom) + "戴了肛塞，因此无法排便")
 					endif
 					return -1
 				endif
@@ -1951,9 +2024,11 @@ int function StartSexlabAnimation(Actor dom, Actor sub, bool pee, bool fart, int
 
 				if (PAF_DDQuest.IsAnalPlugged(dom) || PAF_DDQuest.hasDeviousBelt(dom))
 					if (dom == PlayerREF)
-						DisplayMessage("You are wearing an anal plug and therefore cannot relieve your bowels")
+						; DisplayMessage("You are wearing an anal plug and therefore cannot relieve your bowels")
+						DisplayMessage("你戴了肛塞，因此无法排便")
 					else
-						DisplayMessage(PAF_NPCQuest.GetNPCName(dom) + " is wearing an anal plug and therefore cannot relieve " + PAF_NPCQuest.GetNPCPronoun(dom) + " bowels")
+						; DisplayMessage(PAF_NPCQuest.GetNPCName(dom) + " is wearing an anal plug and therefore cannot relieve " + PAF_NPCQuest.GetNPCPronoun(dom) + " bowels")
+						DisplayMessage(PAF_NPCQuest.GetNPCName(dom) + "戴了肛塞，因此无法排便")
 					endif
 					return -1
 				endif
@@ -1975,9 +2050,11 @@ int function StartSexlabAnimation(Actor dom, Actor sub, bool pee, bool fart, int
 
 				if (PAF_DDQuest.IsAnalPlugged(dom) || PAF_DDQuest.hasDeviousBelt(dom))
 					if (dom == PlayerREF)
-						DisplayMessage("You are wearing an anal plug and therefore cannot relieve your bowels")
+						; DisplayMessage("You are wearing an anal plug and therefore cannot relieve your bowels")
+						DisplayMessage("你戴了肛塞，因此无法排便")
 					else
-						DisplayMessage(PAF_NPCQuest.GetNPCName(dom) + " is wearing an anal plug and therefore cannot relieve " + PAF_NPCQuest.GetNPCPronoun(dom) + " bowels")
+						; DisplayMessage(PAF_NPCQuest.GetNPCName(dom) + " is wearing an anal plug and therefore cannot relieve " + PAF_NPCQuest.GetNPCPronoun(dom) + " bowels")
+						DisplayMessage(PAF_NPCQuest.GetNPCName(dom) + "戴了肛塞，因此无法排便")
 					endif
 					return -1
 				endif
@@ -2176,18 +2253,22 @@ function SexlabPoop(Actor a_actor, Actor a_target = none)
 	
 	if (PAF_DDQuest.IsAnalPlugged(a_actor))
 		if (a_actor == PlayerREF)
-			DisplayMessage("You are wearing an anal plug and therefore cannot relieve your bowels")
+			; DisplayMessage("You are wearing an anal plug and therefore cannot relieve your bowels")
+			DisplayMessage("你戴了肛塞，因此无法排便")
 		else
-			DisplayMessage(PAF_NPCQuest.GetNPCName(a_actor) + " is wearing an anal plug and therefore cannot relieve " + PAF_NPCQuest.GetNPCPronoun(a_actor) + " bowels")
+			; DisplayMessage(PAF_NPCQuest.GetNPCName(a_actor) + " is wearing an anal plug and therefore cannot relieve " + PAF_NPCQuest.GetNPCPronoun(a_actor) + " bowels")
+			DisplayMessage(PAF_NPCQuest.GetNPCName(dom) + "戴了肛塞，因此无法排便")
 		endif
 		return
 	endif
 
 	if (PAF_DDQuest.HasDeviousBelt(a_actor))
 		if (a_actor == PlayerREF)
-			DisplayMessage("A devious device prevents you from releasing the contents of your bowels")
+			; DisplayMessage("A devious device prevents you from releasing the contents of your bowels")
+			DisplayMessage("一个DD装备阻止你排便")
 		else
-			DisplayMessage("A devious device prevents + " + PAF_NPCQuest.GetNPCName(a_actor) + " + from releasing the contents of " + PAF_NPCQuest.GetNPCPronoun(a_actor) + " bowels")
+			; DisplayMessage("A devious device prevents + " + PAF_NPCQuest.GetNPCName(a_actor) + " + from releasing the contents of " + PAF_NPCQuest.GetNPCPronoun(a_actor) + " bowels")
+			DisplayMessage("一个DD装备阻止" + PAF_NPCQuest.GetNPCName(a_actor) + "排便")
 		endif
 		return
 	endif
@@ -2195,22 +2276,28 @@ function SexlabPoop(Actor a_actor, Actor a_target = none)
 	if (!HasDiaper(a_actor))	
 		if (a_actor == PlayerREF)
 			if (a_target != none)
-				DisplayMessage("You are relieving yourself on " + PAF_NPCQuest.GetNPCName(a_target))
+				; DisplayMessage("You are relieving yourself on " + PAF_NPCQuest.GetNPCName(a_target))
+				DisplayMessage("你正在" + PAF_NPCQuest.GetNPCName(a_target) + "身上释放")
 			else
-				DisplayMessage("You are relieving yourself")
+				; DisplayMessage("You are relieving yourself")
+				DisplayMessage("你正在释放你自己")
 			endif
 		else
 			if (a_target != none)
-				DisplayMessage(PAF_NPCQuest.GetNPCName(a_actor) + " is relieving " + PAF_NPCQuest.GetNPCReflexivePronoun(a_actor) + " on " + PAF_NPCQuest.GetNPCName(a_target))
+				; DisplayMessage(PAF_NPCQuest.GetNPCName(a_actor) + " is relieving " + PAF_NPCQuest.GetNPCReflexivePronoun(a_actor) + " on " + PAF_NPCQuest.GetNPCName(a_target))
+				DisplayMessage(PAF_NPCQuest.GetNPCName(a_actor) + "正在" + PAF_NPCQuest.GetNPCName(a_target) + "身上释放")
 			else
-				DisplayMessage(PAF_NPCQuest.GetNPCName(a_actor) + " is relieving " + PAF_NPCQuest.GetNPCReflexivePronoun(a_actor) + " on " + PAF_NPCQuest.GetNPCName(a_target))
+				; DisplayMessage(PAF_NPCQuest.GetNPCName(a_actor) + " is relieving " + PAF_NPCQuest.GetNPCReflexivePronoun(a_actor) + " on " + PAF_NPCQuest.GetNPCName(a_target))
+				DisplayMessage(PAF_NPCQuest.GetNPCName(a_actor) + "正在" + PAF_NPCQuest.GetNPCName(a_target) + "身上释放")
 			endif
 		endif	
 	else
 		if (a_actor == PlayerREF)
-			DisplayMessage("You fill your diaper")
+			; DisplayMessage("You fill your diaper")
+			DisplayMessage("你把尿布装满了")
 		else
-			DisplayMessage(PAF_NPCQuest.GetNPCName(a_actor) + " fills " + PAF_NPCQuest.GetNPCPronoun(a_actor) + " diaper")
+			; DisplayMessage(PAF_NPCQuest.GetNPCName(a_actor) + " fills " + PAF_NPCQuest.GetNPCPronoun(a_actor) + " diaper")
+			DisplayMessage(PAF_NPCQuest.GetNPCName(a_actor) + "把尿布装满了")
 		endif
 	endif
 	
@@ -2255,22 +2342,28 @@ function SexlabPee(Actor a_actor, Actor a_target = none)
 	endif
 	if (HasDiaper(a_actor))
 		if (a_actor == PlayerREF)
-			DisplayMessage("You pee in your diaper")
+			; DisplayMessage("You pee in your diaper")
+			DisplayMessage("你在尿布里尿尿")
 		else
-			DisplayMessage(PAF_NPCQuest.GetNPCName(a_actor) + " pees in " + PAF_NPCQuest.GetNPCPronoun(a_actor) + " diaper")
+			; DisplayMessage(PAF_NPCQuest.GetNPCName(a_actor) + " pees in " + PAF_NPCQuest.GetNPCPronoun(a_actor) + " diaper")
+			DisplayMessage(PAF_NPCQuest.GetNPCName(a_actor) + "在尿布里尿尿")
 		endif
 	else
 		if (a_target != none)
 			if (a_actor == PlayerREF)
-				DisplayMessage("You pee on " + PAF_NPCQuest.GetNPCName(a_target))
+				; DisplayMessage("You pee on " + PAF_NPCQuest.GetNPCName(a_target))
+				DisplayMessage("你尿在" + PAF_NPCQuest.GetNPCName(a_target) + "的身上")
 			else
-				DisplayMessage(PAF_NPCQuest.GetNPCName(a_actor) + " pees on " + PAF_NPCQuest.GetNPCName(a_target))				
+				; DisplayMessage(PAF_NPCQuest.GetNPCName(a_actor) + " pees on " + PAF_NPCQuest.GetNPCName(a_target))
+				DisplayMessage(PAF_NPCQuest.GetNPCName(a_actor) + "尿在" + PAF_NPCQuest.GetNPCName(a_target) + "的身上")
 			endif		
 		else
 			if (a_actor == PlayerREF)
-				DisplayMessage("You pee on youself")
+				; DisplayMessage("You pee on youself")
+				DisplayMessage("你尿在自己身上")
 			else
-				DisplayMessage(PAF_NPCQuest.GetNPCName(a_actor) + " pees on " + PAF_NPCQuest.GetNPCReflexivePronoun(a_actor))
+				; DisplayMessage(PAF_NPCQuest.GetNPCName(a_actor) + " pees on " + PAF_NPCQuest.GetNPCReflexivePronoun(a_actor))
+				DisplayMessage(PAF_NPCQuest.GetNPCName(a_actor) + "尿在" + PAF_NPCQuest.GetNPCReflexivePronoun(a_actor) + "的身上")
 			endif		
 		endif
 	endif
